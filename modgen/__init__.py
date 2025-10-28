@@ -1,3 +1,24 @@
+"""Core package for the Modgen project management tooling."""
+
+from .project_manager import Project, ProjectManager
+from .exceptions import (
+    ProjectError,
+    ProjectExistsError,
+    ProjectNotFoundError,
+    ProjectNotInitializedError,
+    InvalidProjectNameError,
+    ProjectSerializationError,
+)
+
+__all__ = [
+    "Project",
+    "ProjectManager",
+    "ProjectError",
+    "ProjectExistsError",
+    "ProjectNotFoundError",
+    "ProjectNotInitializedError",
+    "InvalidProjectNameError",
+    "ProjectSerializationError",
 """Utilities for interacting with the OpenAI API using structured prompts.
 
 This package provides a light-weight, dependency free client for sending
