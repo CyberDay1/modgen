@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import OpenAI from 'openai';
 import { Buffer } from 'buffer';
+import { resolveEndpoint } from '../../ai/endpoint';
 import type { SavePngResult } from '../../assets/assetStore';
 import { savePng } from '../../assets/assetStore';
 
@@ -69,6 +70,7 @@ const statusColours: Record<StatusKind, string> = {
 };
 
 let cachedOpenAIClient: OpenAI | null = null;
+let cachedClientConfig: { apiKey: string; baseURL: string } | null = null;
 
 function toErrorMessage(error: unknown): string {
   if (error instanceof Error) {
@@ -105,16 +107,24 @@ function resolveOpenAIApiKey(): string | undefined {
 }
 
 function getOpenAIClient(): OpenAI {
-  if (cachedOpenAIClient) {
-    return cachedOpenAIClient;
-  }
-
   const apiKey = resolveOpenAIApiKey();
   if (!apiKey) {
     throw new Error('Set OPENAI_API_KEY to enable AI texture generation.');
   }
 
-  cachedOpenAIClient = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+  const baseURL = resolveEndpoint();
+
+  if (
+    cachedOpenAIClient &&
+    cachedClientConfig &&
+    cachedClientConfig.apiKey === apiKey &&
+    cachedClientConfig.baseURL === baseURL
+  ) {
+    return cachedOpenAIClient;
+  }
+
+  cachedOpenAIClient = new OpenAI({ apiKey, baseURL, dangerouslyAllowBrowser: true });
+  cachedClientConfig = { apiKey, baseURL };
   return cachedOpenAIClient;
 }
 

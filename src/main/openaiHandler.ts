@@ -1,6 +1,10 @@
 import OpenAI from 'openai';
+import { resolveEndpoint } from '../ai/endpoint';
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? '' });
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY ?? '',
+  baseURL: resolveEndpoint(),
+});
 
 export async function generateModConcept(prompt: string): Promise<string> {
   if (!client.apiKey) {
