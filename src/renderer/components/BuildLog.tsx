@@ -34,26 +34,7 @@ type LogPayload =
       timestamp?: number | string;
     };
 
-declare global {
-  interface Window {
-    electronAPI?: {
-      onGradleLog?: (listener: (payload: unknown) => UnknownDispose) => UnknownDispose;
-      requestGradleLogStream?: () => void;
-      startGradleLogStream?: () => void;
-      stopGradleLogStream?: () => void;
-    };
-    modgen?: {
-      onGradleLog?: (listener: (payload: unknown) => UnknownDispose) => UnknownDispose;
-      build?: {
-        onLog?: (listener: (payload: unknown) => UnknownDispose) => UnknownDispose;
-        startStreaming?: () => void;
-        stopStreaming?: () => void;
-      };
-    };
-    require?: (module: string) => any;
-    nodeRequire?: (module: string) => any;
-  }
-}
+
 
 function resolveDispose(dispose: UnknownDispose): () => void {
   if (typeof dispose === 'function') {

@@ -2,13 +2,15 @@
   "name": "modgen",
   "version": "1.0.0",
   "description": "Electron + React shell for modgen",
-  "main": "src/main/main.ts",
+  "main": "dist/main/main.js",
   "author": "",
   "license": "MIT",
   "scripts": {
-    "start": "electron .",
-    "build": "tsc && electron-builder",
-    "pack": "electron-builder --dir"
+    "build:ts": "tsc",
+    "build": "npm run build:ts && electron-builder",
+    "start": "npm run build:ts && electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "@monaco-editor/react": "4.6.0",

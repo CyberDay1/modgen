@@ -1,28 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-declare global {
-  interface Window {
-    electronAPI?: {
-      openProjectDirectory?: () => Promise<void> | void;
-    };
-    modgen?: {
-      project?: {
-        rootDirectory?: string;
-        rootPath?: string;
-        directory?: string;
-      };
-      paths?: {
-        projectRoot?: string;
-        project?: string;
-      };
-      commands?: {
-        openProjectDirectory?: () => Promise<void> | void;
-      };
-    };
-    require?: (module: string) => any;
-    nodeRequire?: (module: string) => any;
-  }
-}
 
 const containerStyle: React.CSSProperties = {
   display: 'flex',
