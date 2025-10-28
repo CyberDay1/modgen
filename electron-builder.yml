@@ -1,0 +1,8 @@
+appId: com.cyberday1.modgen
+productName: ModGen
+win:
+  target: nsis
+publish:
+  provider: github
+  owner: CyberDay1
+  repo: modgen
