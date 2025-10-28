@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn } from "child_process";
 
 export type GradleArgs = string[];
 
@@ -22,21 +22,25 @@ export interface GradleRunOptions {
   env?: NodeJS.ProcessEnv;
 }
 
-const DEFAULT_ARGS: GradleArgs = ['build'];
+const DEFAULT_ARGS: GradleArgs = ["build"];
 
 function getGradleWrapperName(): string {
-  return process.platform === 'win32' ? 'gradlew.bat' : './gradlew';
+  return process.platform === "win32" ? "gradlew.bat" : "./gradlew";
 }
 
-export function runGradle(cwd: string, args: string[] = DEFAULT_ARGS): Promise<GradleRunResult>;
+/**
+ * Run Gradle using either a cwd string or a full options object.
+ * This overload keeps both call forms valid.
+ */
+export function runGradle(cwd: string, args?: string[]): Promise<GradleRunResult>;
 export function runGradle(options: GradleRunOptions): Promise<GradleRunResult>;
 export function runGradle(
   cwdOrOptions: string | GradleRunOptions,
-  maybeArgs: string[] = DEFAULT_ARGS
+  maybeArgs?: string[]
 ): Promise<GradleRunResult> {
   const options: GradleRunOptions =
-    typeof cwdOrOptions === 'string'
-      ? { cwd: cwdOrOptions, args: maybeArgs }
+    typeof cwdOrOptions === "string"
+      ? { cwd: cwdOrOptions, args: maybeArgs ?? DEFAULT_ARGS }
       : { ...cwdOrOptions, args: cwdOrOptions.args ?? DEFAULT_ARGS };
 
   const gradleExecutable = getGradleWrapperName();
@@ -45,15 +49,13 @@ export function runGradle(
     const child = spawn(gradleExecutable, options.args ?? DEFAULT_ARGS, {
       cwd: options.cwd,
       env: options.env ?? process.env,
-      stdio: 'inherit',
-      shell: process.platform === 'win32' && gradleExecutable.endsWith('.bat')
+      stdio: "inherit",
+      shell: process.platform === "win32" && gradleExecutable.endsWith(".bat"),
     });
 
-    child.once('error', (error) => {
-      reject(error);
-    });
+    child.once("error", (error) => reject(error));
 
-    child.once('close', (code, signal) => {
+    child.once("close", (code, signal) => {
       if (code === 0) {
         resolve({ code: code ?? 0, signal });
         return;
@@ -61,11 +63,11 @@ export function runGradle(
 
       const gradleError = new Error(
         `Gradle wrapper exited with ${
-          typeof code === 'number' ? `code ${code}` : `signal ${signal}`
+          typeof code === "number" ? `code ${code}` : `signal ${signal}`
         }`
       ) as NodeJS.ErrnoException & { exitCode?: number; signal?: NodeJS.Signals | null };
 
-      gradleError.code = typeof code === 'number' ? String(code) : gradleError.code;
+      gradleError.code = typeof code === "number" ? String(code) : gradleError.code;
       gradleError.exitCode = code === null ? undefined : code;
       gradleError.signal = signal;
 
