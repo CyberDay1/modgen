@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@renderer/*": ["src/renderer/*"],
-      "@main/*": ["src/main/*"]
-    }
+    "target": "ESNext",
+    "module": "commonjs",
+    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true
   },
   "include": ["src"]
 }
