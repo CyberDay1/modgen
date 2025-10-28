@@ -1,6 +1,6 @@
 {
   "name": "modgen",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Electron + React shell for modgen",
   "main": "src/main/main.ts",
   "author": "",
