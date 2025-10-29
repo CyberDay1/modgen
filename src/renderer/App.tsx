@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import SettingsPanel from "./components/SettingsPanel";
+import AIPanel from "./components/AIPanel";
 
 type ElectronAPI = NonNullable<Window["electronAPI"]>;
 
@@ -29,16 +30,26 @@ export default function App() {
     };
   }, [electronAPI, modgenAPI]);
 
+  console.log("Rendering SettingsPanel:", showSettings);
+
   return (
     <div
       style={{
-        padding: "1rem",
+        padding: "1.5rem",
         minHeight: "100vh",
         background: "#1e1e1e",
         color: "#ddd",
+        boxSizing: "border-box",
       }}
     >
-      <header style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+          marginBottom: "1.5rem",
+        }}
+      >
         <div>
           <h1 style={{ color: "#00aaff", marginBottom: "0.25rem" }}>ModGen</h1>
           <p style={{ color: "#ccc", margin: 0 }}>AI-powered mod generator</p>
@@ -50,7 +61,7 @@ export default function App() {
             background: "#007acc",
             color: "#fff",
             border: "none",
-            padding: "0.4rem 0.8rem",
+            padding: "0.45rem 0.95rem",
             borderRadius: "4px",
             cursor: "pointer",
           }}
@@ -59,7 +70,17 @@ export default function App() {
         </button>
       </header>
 
-      {showSettings && <SettingsPanel />}
+      <main
+        style={{
+          display: "grid",
+          gap: "1.5rem",
+          gridTemplateColumns: showSettings ? "minmax(280px, 340px) 1fr" : "1fr",
+          alignItems: "start",
+        }}
+      >
+        {showSettings && <SettingsPanel />}
+        <AIPanel />
+      </main>
     </div>
   );
 }
